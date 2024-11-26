@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 });
 
-function authenticate_user(email, password) {
+function authenticateUser(email, password) {
 	$.ajax({
 		url: 'https://miniproject-2024.ue.r.appspot.com/authenticate', // Adjust the URL if your backend runs on a different port
 		method: 'POST',
