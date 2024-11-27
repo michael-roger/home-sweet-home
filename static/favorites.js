@@ -66,8 +66,8 @@ function getProfile(token) {
 
 function getFavBuildings() {
   $.ajax({
-		// url: `https://miniproject-2024.ue.r.appspot.com/user/${localStorage.getItem("userId")}/buildings`,
-    url: `https://miniproject-2024.ue.r.appspot.com/user/2/buildings`,
+		url: `https://miniproject-2024.ue.r.appspot.com/user/${localStorage.getItem("userId")}/buildings`,
+    // url: `https://miniproject-2024.ue.r.appspot.com/user/2/buildings`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -115,8 +115,8 @@ function populateBuildingsTable(buildings) {
 
 function getFavHousingUnits() {
   $.ajax({
-		// url: `https://miniproject-2024.ue.r.appspot.com/user/${localStorage.getItem("userId")}/buildings`,
-    url: `https://miniproject-2024.ue.r.appspot.com/user/2/housing-units`,
+		url: `https://miniproject-2024.ue.r.appspot.com/user/${localStorage.getItem("userId")}/buildings`,
+    // url: `https://miniproject-2024.ue.r.appspot.com/user/2/housing-units`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
