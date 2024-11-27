@@ -36,6 +36,7 @@ function displayBuildings(buildings) {
                             <strong>State:</strong> ${building.state}<br>
                             <strong>Zip Code:</strong> ${building.zipCode}<br>
                         </p>
+                        <a href="building.html?id=${building.id}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>
