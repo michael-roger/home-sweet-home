@@ -40,21 +40,54 @@ function fetchHousingUnits(buildingId) {
         }
     });
 }
-
 function displayBuildingDetails(building) {
     $('#building-address').text(building.address);
-    const featuresList = $('#building-features');
 
+    const buildingDetails = `
+        <p>${building.address}</p>
+        <p>${building.city}, ${building.state} ${building.zip_code}</p>
+    `;
+    $('#building-details').html(buildingDetails);
+
+    const featuresList = $('#building-features');
     building.features.forEach(feature => {
         featuresList.append(`<li class="list-group-item">${feature}</li>`);
     });
 }
 
+
 function displayHousingUnits(housingUnits) {
     const housingUnitsList = $('#housing-units');
 
     housingUnits.forEach(unit => {
-        housingUnitsList.append(`<li class="list-group-item">Unit Number: ${unit.unitNumber}</li>`);
+        fetchHousingUnitDetails(unit.id, function (unitDetails) {
+            let features = 'No features available';
+            if (unitDetails.housing_unit_features && unitDetails.housing_unit_features.length > 0) {
+                features = unitDetails.housing_unit_features.map(feature => `<li>${feature}</li>`).join('');
+            }
+
+            const housingUnitHtml = `
+                <li class="list-group-item">
+                    <strong>Unit Number:</strong> ${unit.unitNumber}<br>
+                    <strong>Features:</strong>
+                    <ul>${features}</ul>
+                </li>
+            `;
+            housingUnitsList.append(housingUnitHtml);
+        });
+    });
+}
+
+function fetchHousingUnitDetails(unitId, callback) {
+    $.ajax({
+        url: `https://miniproject-2024.ue.r.appspot.com/housing-unit/${unitId}`,
+        method: 'GET',
+        success: function (response) {
+            callback(response);
+        },
+        error: function (xhr) {
+            console.error(`Failed to fetch details for housing unit ID: ${unitId}`);
+        }
     });
 }
 

@@ -87,3 +87,9 @@ button:hover {
     background-color: #0056b3;
     color: white;
 }
+
+.building-details {
+    font-size: 1.2rem;
+    color: #6c757d; /* Bootstrap's muted gray */
+    line-height: 1.6;
+}
