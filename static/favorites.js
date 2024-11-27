@@ -9,19 +9,29 @@ $(document).ready(function () {
     e.preventDefault();
     localStorage.removeItem('token');
     localStorage.removeItem('name');
-    location.reload();
+    window.location.href = "index.html";
   });
 
   $('#housing-units-tab').click(function () {
     console.log("housing unit tab clicked");
+    activateTab('#housing-units-tab', '#buildings-tab', '#housing-units', '#buildings');
     getFavHousingUnits();
   });
   
   $('#buildings-tab').click(function () {
     console.log("Buildings tab clicked");
+    activateTab('#buildings-tab', '#housing-units-tab', '#buildings', '#housing-units');
     getFavBuildings();
   });
 });
+
+function activateTab(activeTabId, inactiveTabId, activeContentId, inactiveContentId) {
+  $(activeTabId).addClass('active').attr('aria-selected', 'true');
+  $(inactiveTabId).removeClass('active').attr('aria-selected', 'false');
+
+  $(activeContentId).addClass('show active');
+  $(inactiveContentId).removeClass('show active');
+}
 
 function getProfile(token) {
   $.ajax({
@@ -99,6 +109,8 @@ function populateBuildingsTable(buildings) {
     `;
     tableBody.append(row);
   });
+
+  showBuildingsTable();
 }
 
 function getFavHousingUnits() {
@@ -149,4 +161,16 @@ function populateHousingUnitsTable(units) {
     `;
     tableBody.append(row);
   });
+
+  showHousingUnitsTable();
+}
+
+function showBuildingsTable() {
+  $('#buildings').addClass('show active');
+  $('#housing-units').removeClass('show active');
+}
+
+function showHousingUnitsTable() {
+  $('#housing-units').addClass('show active');
+  $('#buildings').removeClass('show active');
 }
