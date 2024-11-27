@@ -59,51 +59,5 @@
   <footer class="royal-blue text-center py-3">
     <a>&copy; 2024 KebabCase. All Rights Reserved.</a>
   </footer>
-
-  <script>
-    $(document).ready(function() {
-      $('#user-login-btn').click(function() {
-        const email = $('#email').val();
-        const password = $('#password').val();
-
-        // Make POST request to authenticate endpoint
-        $.ajax({
-          url: 'http://127.0.0.1:5000/authenticate', // Adjust URL as needed
-          method: 'POST',
-          data: { email: email, password: password },
-          success: function(response) {
-            // Clear error message if login is successful
-            $('#error-message').addClass('d-none').text('');
-
-            // Save token (or handle as needed)
-            localStorage.setItem('token', response);
-
-            // Redirect to another page after successful login
-            window.location.href = 'dashboard.html';
-          },
-          error: function(jqXHR) {
-            // Show appropriate error message
-            let errorText = '';
-            switch (jqXHR.status) {
-              case 400: // Bad Request
-                errorText = 'Please fill out both email and password fields.';
-                break;
-              case 404: // Not Found
-                errorText = 'No account found with the provided email.';
-                break;
-              case 401: // Unauthorized
-                errorText = 'Invalid password. Please try again.';
-                break;
-              default: // Other errors
-                errorText = 'An unexpected error occurred. Please try again later.';
-            }
-
-            // Display error message
-            $('#error-message').removeClass('d-none').text(errorText);
-          }
-        });
-      });
-    });
-  </script>
 </body>
 </html>

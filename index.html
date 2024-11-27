@@ -72,29 +72,29 @@
 <script>
   $(document).ready(function () {
     const token = localStorage.getItem('token');
+    // const name = localStorage.getItem('name');
     const $navbarCollapse = $('#navbarNavAltMarkup');
 
     if (token) {
       // If logged in, replace with a greeting and Log Out button
+
       $navbarCollapse.html(`
-        <form action="#" class="d-flex me-auto" method="get" onsubmit="return handleSearch(this);">
-          <input type="text" class="form-control me-2" placeholder="Search..." name="search" autofocus>
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <span class="nav-link">Hello, User!</span>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" id="logout-btn">Log Out</a>
-          </li>
-        </ul>
-      `);
+         <form action="#" class="d-flex me-auto" method="get" onsubmit="return handleSearch(this);">
+           <input type="text" class="form-control me-2" placeholder="Search..." name="search" autofocus>
+           <button class="btn btn-outline-success" type="submit">Search</button>
+         </form>
+         <ul class="navbar-nav ms-auto">
+           <li class="nav-item">
+             <a class="nav-link" href="#" id="logout-btn">Log Out</a>
+           </li>
+         </ul>
+       `);
 
       // Log Out functionality
       $('#logout-btn').on('click', function (e) {
         e.preventDefault();
         localStorage.removeItem('token');
+        localStorage.removeItem('name');
         location.reload();
       });
     } else {
