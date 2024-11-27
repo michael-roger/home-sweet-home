@@ -15,7 +15,8 @@ function authenticateUser(email, password) {
 		data: {
 			email: email,
 			password: password,
-			clientName: 'home-sweet-home'
+			// clientName: 'HomeSweetHome'
+      clientName: 'BronxHousing'
 		},
 		success: function(response) {
 			$('#error-message').addClass('d-none').text('');
