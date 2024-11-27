@@ -6,62 +6,85 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-
+<script type="text/javascript" src="static/favorites.js"></script>
 
 <body class="home">
 
     <nav class="navbar navbar-expand-lg royal-blue">
-        <div class="container">
-          <a class="navbar-brand bold" href="index.html">Home Sweet Home</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <form action="#" class="d-flex me-auto" method="get" onsubmit="return handleSearch(this);">
-              <input type="text" class="form-control me-2" placeholder="Search..." name="search" autofocus>
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="login.html">Log In</a>
-              </li>
-            </ul>
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="signup.html">Sign Up</a>
-              </li>
-            </ul>
+      <div class="container">
+        <a class="navbar-brand bold" href="index.html">Home Sweet Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <form action="#" class="d-flex me-auto" method="get" onsubmit="return handleSearch(this);">
+            <input type="text" class="form-control me-2" placeholder="Search..." name="search" autofocus>
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="favorites.html" id="fav-btn">Your Favorites</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="logout-btn">Log Out</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+      
+    <div class="container mt-5">
+      <div class="text-center">
+        <h1 id="user-name"></h1>
+        <p id="user-email" class="text-muted"></p>
+      </div>
+      <div class="mt-4">
+        <!-- Tabs for Saved Buildings and Housing Units -->
+        <ul class="nav nav-tabs" id="profile-tabs" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active" id="buildings-tab" data-bs-toggle="tab" data-bs-target="#buildings" type="button" role="tab" aria-controls="buildings" aria-selected="true">Saved Buildings</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" id="housing-units-tab" data-bs-toggle="tab" data-bs-target="#housing-units" type="button" role="tab" aria-controls="housing-units" aria-selected="false">Saved Housing Units</button>
+          </li>
+        </ul>
+        <div class="tab-content mt-3" id="profile-tabs-content">
+          <!-- Saved Buildings Table -->
+          <div class="tab-pane fade show active" id="buildings" role="tabpanel" aria-labelledby="buildings-tab">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Address</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>Zip Code</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="saved-buildings">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+          </div>
+          <!-- Saved Housing Units Table -->
+          <div class="tab-pane fade" id="housing-units" role="tabpanel" aria-labelledby="housing-units-tab">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Unit Number</th>
+                  <th>Building</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="saved-housing-units">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
           </div>
         </div>
-      </nav>
-      
-    <div class="header"><br><br><br><br><br>
-        <h1 class="title">Home Sweet Home</h1>
-        <br>
-        <img src="static/nyc-skyline.png" alt="NYC Skyline">
-    </div>
-
-    <div class="features">
-        <p class="tagline">Matching tenants with New York City’s accessible housing since 2024!</p>
-    </div>
-
-    <div class="features">
-        <div>
-            <h3>Browse Building Accessibility Features!</h3>
-            <ul>
-                <li><a href="#">Elevators</a></li>
-                <li><a href="#">Wheelchair Ramps</a></li>
-                <li><a href="#">Near Medical Facilities</a></li>
-            </ul>
-        </div>
-        <div>
-            <h3>Browse Unit Accessibility Features!</h3>
-            <ul>
-                <li><a href="#">Wheelchair Accessibility</a></li>
-                <li><a href="#">Walk-In Showers</a></li>
-                <li><a href="#">Ground Floor</a></li>
-            </ul>
-        </div>
+      </div>
     </div>
 
     <footer class=" royal-blue">
