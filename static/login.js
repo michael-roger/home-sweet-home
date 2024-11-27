@@ -36,8 +36,8 @@ function authenticateUser(email, password) {
 		data: {
 			email: email,
 			password: password,
-      clientName: 'BronxHousing'
-			// clientName: 'HomeSweetHome'
+      // clientName: 'BronxHousing'
+			clientName: 'HomeSweetHome'
 		},
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
