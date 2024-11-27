@@ -48,8 +48,8 @@ function getProfile(token) {
 
 function getFavBuildings(id) {
   $.ajax({
-		url: `https://miniproject-2024.ue.r.appspot.com/user/${id}/buildings`,
-    // url: `https://miniproject-2024.ue.r.appspot.com/user/2/buildings`,
+		// url: `https://miniproject-2024.ue.r.appspot.com/user/${id}/buildings`,
+    url: `https://miniproject-2024.ue.r.appspot.com/user/2/buildings`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -73,16 +73,17 @@ function getFavBuildings(id) {
 
 function populateBuildingsTable(buildings) {
   const tableBody = $('#saved-buildings');
-  tableBody.empty(); // Clear any existing rows
+  tableBody.empty();
 
   buildings.forEach((building, index) => {
+    const featuresList = building.features ? building.features.join(", ") : "None";
     const row = `
       <tr>
         <td>${index + 1}</td>
         <td>${building.address}</td>
         <td>${building.city}</td>
         <td>${building.state}</td>
-        <td>${building.zip_code}</td>
+        <td>${featuresList}</td>
         <td>
           <button class="btn btn-danger btn-sm" onclick="deleteBuilding(${building.id})">Remove</button>
         </td>
