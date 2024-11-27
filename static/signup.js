@@ -36,7 +36,6 @@ $(document).ready(function () {
 function create_user(firstName, lastName, email, password) {
   $.ajax({
     url: 'https://miniproject-2024.ue.r.appspot.com/users',
-    // url: 'https://localhost:8080/users',
     method: 'POST',
     data: {
       firstName: firstName,

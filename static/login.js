@@ -32,7 +32,7 @@ $(document).ready(function() {
 function authenticateUser(email, password) {
 	$.ajax({
 		url: 'https://miniproject-2024.ue.r.appspot.com/authenticate',
-        method: 'POST',
+    method: 'POST',
 		data: {
 			email: email,
 			password: password,
