@@ -11,7 +11,16 @@ $(document).ready(function () {
     localStorage.removeItem('name');
     location.reload();
   });
-        
+
+  $('#housing-units-tab').click(function () {
+    console.log("housing unit tab clicked");
+    getFavHousingUnits();
+  });
+  
+  $('#buildings-tab').click(function () {
+    console.log("Buildings tab clicked");
+    getFavBuildings();
+  });
 });
 
 function getProfile(token) {
@@ -24,11 +33,10 @@ function getProfile(token) {
     },
     crossDomain: true,
 		success: function(response) {
-      console.log(`Successfully retrieved user info ${response.firstName} ${response.lastName} ${response.emailAddress}`);
+      localStorage.setItem("userId", response.id);
 			$('#user-name').text(response.firstName + " " + response.lastName);
       $('#user-email').text(response.emailAddress);
-      getFavBuildings(response.id);
-      // getFavHousingUnits(response.id);
+      getFavBuildings();
 		},
 		error: function(xhr) {
 			// Handle different error scenarios
@@ -46,9 +54,9 @@ function getProfile(token) {
 	});	
 }
 
-function getFavBuildings(id) {
+function getFavBuildings() {
   $.ajax({
-		// url: `https://miniproject-2024.ue.r.appspot.com/user/${id}/buildings`,
+		// url: `https://miniproject-2024.ue.r.appspot.com/user/${localStorage.getItem("userId")}/buildings`,
     url: `https://miniproject-2024.ue.r.appspot.com/user/2/buildings`,
     method: 'GET',
     headers: {
@@ -62,7 +70,7 @@ function getFavBuildings(id) {
 			// Handle different error scenarios
       switch (xhr.status) {
         case 404: // Not Found
-          console.log(`User with id ${id} not found.`);
+          console.log(`User with id ${localStorage.getItem('userId')} not found.`);
           break;
         default:
           console.log('An unexpected error occurred. Please try again later.');
@@ -93,26 +101,52 @@ function populateBuildingsTable(buildings) {
   });
 }
 
-function getFavHousingUnits(id) {
+function getFavHousingUnits() {
   $.ajax({
-		url: `https://miniproject-2024.ue.r.appspot.com/user/${id}/buildings`,
+		// url: `https://miniproject-2024.ue.r.appspot.com/user/${localStorage.getItem("userId")}/buildings`,
+    url: `https://miniproject-2024.ue.r.appspot.com/user/2/housing-units`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     crossDomain: true,
 		success: function(response) {
-			
+      console.log(`get housing unit info successful`);
+			populateHousingUnitsTable(response);
 		},
 		error: function(xhr) {
 			// Handle different error scenarios
       switch (xhr.status) {
         case 404: // Not Found
-          console.log(`User with id ${id} not found.`);
+          console.log(`User with id ${localStorage.getItem("userId")} not found.`);
           break;
         default:
           console.log('An unexpected error occurred. Please try again later.');
       }
 		}
 	});	
+}
+
+function populateHousingUnitsTable(units) {
+  const tableBody = $('#saved-housing-units');
+  tableBody.empty();
+
+  units.forEach((unit, index) => {
+    const unitFeatures = unit.housing_unit_features ? unit.housing_unit_features.join(", ") : "None";
+    const buildingFeatures = unit.features ? unit.features.join(", ") : "None";
+    const building = unit.building.address + ", " + unit.building.city + ", " + unit.building.state;
+    const row = `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${unit.unit_number}</td>
+        <td>${unitFeatures}</td>
+        <td>${building}</td>
+        <td>${buildingFeatures}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" onclick="deleteBuilding(${unit.id})">Remove</button>
+        </td>
+      </tr>
+    `;
+    tableBody.append(row);
+  });
 }
