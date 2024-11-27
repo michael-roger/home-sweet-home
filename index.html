@@ -8,6 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="static/index.js"></script>
 </head>
 
 <body class="home">
@@ -55,18 +56,12 @@
     <div class="features">
         <div>
             <h3>Browse Building Accessibility Features!</h3>
-            <ul>
-                <li><a href="#">Elevators</a></li>
-                <li><a href="#">Wheelchair Ramps</a></li>
-                <li><a href="#">Near Medical Facilities</a></li>
+            <ul id="building-features">
             </ul>
         </div>
         <div>
             <h3>Browse Unit Accessibility Features!</h3>
-            <ul>
-                <li><a href="#">Wheelchair Accessibility</a></li>
-                <li><a href="#">Walk-In Showers</a></li>
-                <li><a href="#">Ground Floor</a></li>
+            <ul id="housing-unit-features">
             </ul>
         </div>
     </div>
@@ -76,6 +71,8 @@
       </footer> 
   <script>
     $(document).ready(function () {
+      fetchBuildingFeatures();
+      fetchHousingUnitFeatures();
       const token = localStorage.getItem('token');
       // const name = localStorage.getItem('name');
       const $navbarCollapse = $('#navbarNavAltMarkup');
