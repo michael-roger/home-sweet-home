@@ -8,7 +8,7 @@ function fetchBuildingFeatures() {
       
       featureEntities.forEach(feature => {
         if (feature.name) {
-          buildingFeaturesList.append(`<li><a href="#">${feature.name}</a></li>`);
+          buildingFeaturesList.append(`<li><a href="buildingfeature.html?id=${feature.id}">${feature.name}</a></li>`);
         }
       });
     },
