@@ -63,7 +63,7 @@ function displaySearchResults() {
 
             if (filteredBuildingFeatures.length > 0) {
                 results.push('<br><h4>Building Features:</h4><ul>' +
-                    filteredBuildingFeatures.map(feature => `<li><a href="#">${feature.name}</a></li>`).join('') +
+                    filteredBuildingFeatures.map(feature => `<li><a href="buildingfeature.html?id=${feature.id}">${feature.name}</a></li>`).join('') +
                     '</ul>');
             }
 
