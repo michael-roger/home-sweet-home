@@ -16,10 +16,9 @@ function getQueryParam(param) {
 }
 
 function displaySearchResults() {
-    const query = getQueryParam('search'); // Retrieve query parameter
+    const query = getQueryParam('search');
     const resultsContainer = document.getElementById('search-results');
 
-    // Clear container
     resultsContainer.innerHTML = '';
 
     if (!query) {
@@ -48,7 +47,6 @@ function displaySearchResults() {
         })
     ])
         .then(([buildingFeatures, housingUnitFeatures, buildings]) => {
-            // Filter results for both datasets
             const filteredBuildingFeatures = buildingFeatures.filter(feature =>
                 feature.name.toLowerCase().includes(query.toLowerCase())
             );
@@ -61,7 +59,6 @@ function displaySearchResults() {
                 building.address.toLowerCase().includes(query.toLowerCase())
             )
 
-            // Build combined results
             const results = [];
 
             if (filteredBuildingFeatures.length > 0) {
@@ -82,13 +79,11 @@ function displaySearchResults() {
                     '</ul>');
             }
 
-            // If no results were found
             if (results.length === 0) {
                 resultsContainer.innerHTML = `<li>No results found for "${query}".</li>`;
                 return;
             }
 
-            // Display all results
             resultsContainer.innerHTML = results.join('');
         })
         .catch(error => {
