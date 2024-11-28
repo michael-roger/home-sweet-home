@@ -67,7 +67,7 @@ function getProfile(token) {
 function getFavBuildings() {
   $.ajax({
 		url: `https://miniproject-2024.ue.r.appspot.com/user/${localStorage.getItem("userId")}/buildings`,
-    // url: `https://miniproject-2024.ue.r.appspot.com/user/2/buildings`,
+    // url: `https://miniproject-2024.ue.r.appspot.com/user/3/buildings`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -96,8 +96,7 @@ function populateBuildingsTable(buildings) {
   buildings.forEach((building, index) => {
     const featuresList = building.features ? building.features.join(", ") : "None";
     const row = `
-      <tr>
-        <td>${index + 1}</td>
+      <tr id="building-row-${building.id}">
         <td>${building.address}</td>
         <td>${building.city}</td>
         <td>${building.state}</td>
@@ -115,7 +114,7 @@ function populateBuildingsTable(buildings) {
 
 function getFavHousingUnits() {
   $.ajax({
-		url: `https://miniproject-2024.ue.r.appspot.com/user/${localStorage.getItem("userId")}/buildings`,
+		url: `https://miniproject-2024.ue.r.appspot.com/user/${localStorage.getItem("userId")}/housing-units`,
     // url: `https://miniproject-2024.ue.r.appspot.com/user/2/housing-units`,
     method: 'GET',
     headers: {
@@ -148,14 +147,13 @@ function populateHousingUnitsTable(units) {
     const buildingFeatures = unit.features ? unit.features.join(", ") : "None";
     const building = unit.building.address + ", " + unit.building.city + ", " + unit.building.state;
     const row = `
-      <tr>
-        <td>${index + 1}</td>
+      <tr id="housing-unit-row-${unit.id}">
         <td>${unit.unit_number}</td>
         <td>${unitFeatures}</td>
         <td>${building}</td>
         <td>${buildingFeatures}</td>
         <td>
-          <button class="btn btn-danger btn-sm" onclick="deleteBuilding(${unit.id})">Remove</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteHousingUnit(${unit.id})">Remove</button>
         </td>
       </tr>
     `;
@@ -173,4 +171,46 @@ function showBuildingsTable() {
 function showHousingUnitsTable() {
   $('#housing-units').addClass('show active');
   $('#buildings').removeClass('show active');
+}
+
+function deleteBuilding(buildingId) {
+  const userId = localStorage.getItem("userId");
+
+  $.ajax({
+    url: `https://miniproject-2024.ue.r.appspot.com/user/${userId}/building/${buildingId}`,
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    crossDomain: true,
+    success: function(response) {
+      console.log(`Building with ID ${buildingId} successfully removed.`);
+      // Remove the row from the table
+      $(`#building-row-${buildingId}`).remove();
+    },
+    error: function(xhr) {
+      console.error(`Error removing building with ID ${buildingId}:`, xhr.responseText);
+    }
+  });
+}
+
+function deleteHousingUnit(housingUnitId) {
+  const userId = localStorage.getItem("userId");
+
+  $.ajax({
+    url: `https://miniproject-2024.ue.r.appspot.com/user/${userId}/housing-unit/${housingUnitId}`,
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    crossDomain: true,
+    success: function(response) {
+      console.log(`Housing Unit with ID ${housingUnitId} successfully removed.`);
+      // Remove the row from the table
+      $(`#housing-unit-row-${housingUnitId}`).remove();
+    },
+    error: function(xhr) {
+      console.error(`Error removing housing unit with ID ${housingUnitId}:`, xhr.responseText);
+    }
+  });
 }
