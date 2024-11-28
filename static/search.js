@@ -62,25 +62,25 @@ function displaySearchResults() {
             const results = [];
 
             if (filteredBuildingFeatures.length > 0) {
-                results.push('<h4>Building Features:</h4><ul>' +
+                results.push('<br><h4>Building Features:</h4><ul>' +
                     filteredBuildingFeatures.map(feature => `<li><a href="#">${feature.name}</a></li>`).join('') +
                     '</ul>');
             }
 
             if (filteredHousingUnits.length > 0) {
-                results.push('<h4>Housing Unit Features:</h4><ul>' +
+                results.push('<br><h4>Housing Unit Features:</h4><ul>' +
                     filteredHousingUnits.map(feature => `<li><a href="#">${feature.name}</a></li>`).join('') +
                     '</ul>');
             }
 
             if (filteredBuildings.length > 0) {
-                results.push('<h4>Buildings:</h4><ul>' +
+                results.push('<br><h4>Buildings:</h4><ul>' +
                     filteredBuildings.map(building => `<li><a href="building.html?id=${building.id}">${building.address}</a></li>`).join('') +
                     '</ul>');
             }
 
             if (results.length === 0) {
-                resultsContainer.innerHTML = `<li>No results found for "${query}".</li>`;
+                resultsContainer.innerHTML = `<br><li>No results found for "${query}".</li>`;
                 return;
             }
 
