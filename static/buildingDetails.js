@@ -197,21 +197,35 @@ function toggleFavoriteBuilding(buildingId, add) {
         return;
     }
 
-    const url = `https://miniproject-2024.ue.r.appspot.com/user/${userId}/buildings/${buildingId}`;
+    var url = `https://miniproject-2024.ue.r.appspot.com/user/${userId}/buildings/${buildingId}`;
+    if(add){
+        url = `https://miniproject-2024.ue.r.appspot.com/user/${userId}/buildings/${buildingId}`;
+    }
+    else{
+        url = `https://miniproject-2024.ue.r.appspot.com/user/${userId}/building/${buildingId}`;
+    }
     const method = add ? 'POST' : 'DELETE';
 
     $.ajax({
         url: url,
         method: method,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        crossDomain: true,
         success: function () {
             alert(`Building successfully ${add ? 'added to' : 'removed from'} favorites.`);
             setupFavoriteBuildingButton(true, buildingId, !add);
         },
-        error: function () {
-            console.error(`Error ${add ? 'adding' : 'removing'} building from favorites.`);
-        }
+        error: function (xhr) {
+            console.error(`Error ${add ? 'adding' : 'removing'} building from favorites.`, xhr.responseText);
+            console.log(`Request failed with status: ${xhr.status}`);
+            console.log(`Response text: ${xhr.responseText}`);
+            alert(`Failed to ${add ? 'add' : 'remove'} building from favorites. Please try again.`);
+        },
     });
 }
+
 
 function toggleFavoriteHousingUnit(unitId, add) {
     const userId = localStorage.getItem('userId');
