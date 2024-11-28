@@ -6,3 +6,5 @@ Individual units that users deem most compatible can also be added to a user's "
 Our previous iteration did not have the "Favorites" functionality, which now streamlines the process of considering multiple units.
 Furthermore, all building features and housing unit features are now displayed, which is also new to this iteration.
 This allows users to clearly see the extent of our service and which particular features of a building and unit can be tracked on Home Sweet Home.
+
+This application retrieves its data from the [KebabCase Affordable and Inclusive Housing Access API](https://github.com/michael-roger/KebabCase).
