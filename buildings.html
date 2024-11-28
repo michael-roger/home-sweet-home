@@ -9,6 +9,8 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
     <script src="static/buildings.js"></script>
+    <script type="text/javascript" src="static/search.js"></script>
+
 </head>
 <body class="home">
 
@@ -20,7 +22,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <form action="#" class="d-flex me-auto" method="get" onsubmit="return handleSearch(this);">
+                <form class="d-flex me-auto"  onsubmit="return handleSearch(this);">
                     <input type="text" class="form-control me-2" placeholder="Search..." name="search" autofocus>
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
@@ -109,12 +111,6 @@
                 `);
             }
         });
-
-        // Placeholder function for search handling
-        function handleSearch(form) {
-            alert("Search functionality coming soon!");
-            return false; // Prevent actual form submission
-        }
     </script>
 
 </body>
