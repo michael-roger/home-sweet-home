@@ -69,7 +69,7 @@ function displaySearchResults() {
 
             if (filteredHousingUnits.length > 0) {
                 results.push('<br><h4>Housing Unit Features:</h4><ul>' +
-                    filteredHousingUnits.map(feature => `<li><a href="#">${feature.name}</a></li>`).join('') +
+                    filteredHousingUnits.map(feature => `<li><a href="housingunitfeature.html?id=${feature.id}">${feature.name}</a></li>`).join('') +
                     '</ul>');
             }
 

@@ -29,7 +29,7 @@ function fetchHousingUnitFeatures() {
       
       featureEntities.forEach(feature => {
         if (feature.name) {
-          housingUnitFeaturesList.append(`<li><a href="#">${feature.name}</a></li>`);
+          housingUnitFeaturesList.append(`<li><a href="housingunitfeature.html?id=${feature.id}">${feature.name}</a></li>`);
         }
       });
     },
