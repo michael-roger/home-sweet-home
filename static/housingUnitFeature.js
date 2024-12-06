@@ -35,7 +35,7 @@ function displayUnits(units) {
 
     units.forEach(unit => {
         const unitFeatures = unit.housing_unit_features ? unit.housing_unit_features.join(", ") : "None";
-        const buildingFeatures = unit.features ? unit.features.join(", ") : "None";
+        const buildingFeatures = unit.building.features ? unit.building.features.join(", ") : "None";
         const building = unit.building.address + ", " + unit.building.city + ", " + unit.building.state;
         const unitCard = `
         <div class="col-md-4">

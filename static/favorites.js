@@ -144,13 +144,13 @@ function populateHousingUnitsTable(units) {
 
   units.forEach((unit, index) => {
     const unitFeatures = unit.housing_unit_features ? unit.housing_unit_features.join(", ") : "None";
-    const buildingFeatures = unit.features ? unit.features.join(", ") : "None";
+    const buildingFeatures = unit.building.features ? unit.building.features.join(", ") : "None";
     const building = unit.building.address + ", " + unit.building.city + ", " + unit.building.state;
     const row = `
       <tr id="housing-unit-row-${unit.id}">
         <td>${unit.unit_number}</td>
-        <td>${unitFeatures}</td>
         <td>${building}</td>
+        <td>${unitFeatures}</td>
         <td>${buildingFeatures}</td>
         <td>
           <button class="btn btn-danger btn-sm" onclick="deleteHousingUnit(${unit.id})">Remove</button>
