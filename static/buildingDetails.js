@@ -214,8 +214,12 @@ function toggleFavoriteBuilding(buildingId, add) {
         },
         crossDomain: true,
         success: function () {
-            alert(`Building successfully ${add ? 'added to' : 'removed from'} favorites.`);
+            // alert(`Building successfully ${add ? 'added to' : 'removed from'} favorites.`);
             setupFavoriteBuildingButton(true, buildingId, !add);
+            const button = $('#favorite-button-building');
+            button.prop('disabled', false);
+            button.text(`${!add ? 'Add to' : 'Remove from'} Favorites`);
+            button.off('click').on('click', () => toggleFavoriteBuilding(buildingId, !add));
         },
         error: function (xhr) {
             console.error(`Error ${add ? 'adding' : 'removing'} building from favorites.`, xhr.responseText);
@@ -241,8 +245,10 @@ function toggleFavoriteHousingUnit(unitId, add) {
         url: url,
         method: method,
         success: function () {
-            alert(`Housing unit successfully ${add ? 'added to' : 'removed from'} favorites.`);
+            // alert(`Housing unit successfully ${add ? 'added to' : 'removed from'} favorites.`);
             checkHousingUnitFavorites(userId);
+            // location.reload();
+            console.log("page reloaded");
         },
         error: function () {
             console.error(`Error ${add ? 'adding' : 'removing'} housing unit from favorites.`);
