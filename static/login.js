@@ -2,19 +2,17 @@ $(document).ready(function() {
   const successMessage = localStorage.getItem('signupSuccessMessage');
   
   if (successMessage) {
-    // Display the success message
     $('#error-message')
       .removeClass('d-none alert-danger')
-      .addClass('alert-success') // Change styling to success
+      .addClass('alert-success')
       .text(successMessage);
 
-    // Remove the message from localStorage to prevent it from showing again
     localStorage.removeItem('signupSuccessMessage');
   }
 
 	$('#user-login-btn').click(function() {
-		const email = $('#email').val(); // Assuming your email input field has id="email"
-		const password = $('#password').val(); // Assuming your password input field has id="password"
+		const email = $('#email').val(); 
+		const password = $('#password').val(); 
 		
     if (!email || !password) {
       $('#error-message')
@@ -23,9 +21,15 @@ $(document).ready(function() {
         .text('Please fill out both email and password fields.');
       return;
     }
-
     authenticateUser(email, password);
 	});
+
+  // when you hit the enter button
+  $('#email, #password').on('keydown', function(event) {
+    if (event.key === 'Enter') {
+      $('#user-login-btn').click();
+    }
+  });
 
 });
 

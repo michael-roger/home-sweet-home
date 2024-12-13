@@ -6,30 +6,31 @@ $(document).ready(function () {
     const password = $('#password').val().trim();
     const retypePassword = $('#retype-password').val().trim();
 
-    // Check if any fields are empty
     if (!firstName || !lastName || !email || !password || !retypePassword) {
       $('#error-message').removeClass('d-none').text("All fields are required. Please fill out all fields.");
       return;
     }
 
-    // Validate the email format
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       $('#error-message').removeClass('d-none').text("Please enter a valid email address.");
       return;
     }
 
-    // Check if passwords match
     if (password !== retypePassword) {
       $('#error-message').removeClass('d-none').text("Passwords do not match!");
       return;
     }
 
-    // Clear any existing error messages
     $('#error-message').addClass('d-none').text("");
 
-    // Proceed to create the user
     create_user(firstName, lastName, email, password);
+  });
+
+  $('#first-name, #last-name, #email, #password, #retype-password').on('keydown', function (event) {
+    if (event.key === 'Enter') {
+      $('#user-signup-btn').click();
+    }
   });
 });
 

@@ -90,6 +90,7 @@
                 $('#logout-btn').on('click', function (e) {
                     e.preventDefault();
                     localStorage.removeItem('token');
+                    localStorage.removeItem('userId');
                     location.reload();
                 });
             } else {

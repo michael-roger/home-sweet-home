@@ -12,18 +12,54 @@ $(document).ready(function () {
     fetchHousingUnits(buildingId);
 
     if (token) {
-        const userId = localStorage.getItem('userId');
-        checkBuildingFavorites(userId, buildingId);
-        checkHousingUnitFavorites(userId);
+        console.log("Token: " + token);
+        getUserId(token, buildingId);
+        
     } else {
         setupFavoriteBuildingButton(false);
     }
 });
 
+function getUserId(token, buildingId) {
+    $.ajax({
+            url: 'https://miniproject-2024.ue.r.appspot.com/me',
+            method: 'GET',
+            headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'token': token,
+        },
+        crossDomain: true,
+            success: function(response) {
+                localStorage.setItem("userId", response.id);
+                const userId = localStorage.getItem('userId');
+                console.log("User ID: " + userId);
+                checkBuildingFavorites(userId, buildingId);
+                checkHousingUnitFavorites(userId);
+
+            },
+            error: function(xhr) {
+                // Handle different error scenarios
+            switch (xhr.status) {
+            case 401: // Unauthorized
+                console.log('You must be logged in to view this page.');
+                break;
+            case 404: // Not Found
+                console.log('User information could not be found.');
+                break;
+            default:
+                console.log('An unexpected error occurred. Please try again later.');
+            }
+        }
+    });	
+}
+
 function fetchBuildingDetails(buildingId) {
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/building/${buildingId}`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             displayBuildingDetails(response);
         },
@@ -34,9 +70,12 @@ function fetchBuildingDetails(buildingId) {
 }
 
 function fetchHousingUnits(buildingId) {
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/buildings/${buildingId}/housing-units`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             displayHousingUnits(response);
         },
@@ -82,17 +121,28 @@ function displayHousingUnits(housingUnits) {
             const features = unitDetails.housing_unit_features && unitDetails.housing_unit_features.length > 0
                 ? unitDetails.housing_unit_features.map(feature => `<li>${feature}</li>`).join('')
                 : 'No features available';
-
+    
+            const token = localStorage.getItem('token');
+    
             const housingUnitHtml = `
                 <li class="list-group-item">
                     <strong>Unit Number:</strong> ${unitDetails.unit_number}<br>
                     <strong>Features:</strong>
                     <ul>${features}</ul>
-                    <button id="favorite-unit-${unitDetails.id}" class="btn btn-primary favorite-button-unit" data-unit-id="${unitDetails.id}" disabled>Loading...</button>
+                    ${
+                        token
+                            ? `<button id="favorite-unit-${unitDetails.id}" class="btn btn-primary favorite-button-unit" data-unit-id="${unitDetails.id}" disabled>Loading...</button>`
+                            : '' // No button if no token
+                    }
                 </li>
             `;
             housingUnitsList.append(housingUnitHtml);
-        });
+    
+            if (token) {
+                // Further setup for logged-in users
+                setupFavoriteUnitButtons(true); // Adjust your logic as necessary
+            }
+    })
     });
 
     const token = localStorage.getItem('token');
@@ -103,9 +153,12 @@ function displayHousingUnits(housingUnits) {
 }
 
 function fetchHousingUnitDetails(unitId, callback) {
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/housing-unit/${unitId}`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             callback(response);
         },
@@ -116,9 +169,11 @@ function fetchHousingUnitDetails(unitId, callback) {
 }
 
 function checkBuildingFavorites(userId, buildingId) {
+    const token = localStorage.getItem("token");
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/user/${userId}/buildings`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             const favoritedBuildings = response.map(building => building.id);
             const isFavorited = favoritedBuildings.includes(parseInt(buildingId));
@@ -131,9 +186,12 @@ function checkBuildingFavorites(userId, buildingId) {
 }
 
 function checkHousingUnitFavorites(userId) {
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/user/${userId}/housing-units`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             const favoritedUnits = response.map(unit => unit.id);
             setupFavoriteUnitButtons(true, favoritedUnits);
@@ -149,10 +207,11 @@ function setupFavoriteBuildingButton(isLoggedIn, buildingId = null, isFavorited 
     button.prop('disabled', false);
 
     if (!isLoggedIn) {
-        button.text('Add to Favorites');
-        button.off('click').on('click', () => {
-            alert('You must be logged in to favorite items.');
-        });
+        // button.text('Add to Favorites');
+        // button.off('click').on('click', () => {
+        //     alert('You must be logged in to favorite items.');
+        // });
+        button.addClass('d-none');
         return;
     }
 
@@ -173,10 +232,11 @@ function setupFavoriteUnitButtons(isLoggedIn, favoritedUnits = []) {
         button.prop('disabled', false);
 
         if (!isLoggedIn) {
-            button.text('Add to Favorites');
-            button.off('click').on('click', () => {
-                alert('You must be logged in to favorite items.');
-            });
+            button.addClass('d-none');
+            // button.text('Add to Favorites');
+            // button.off('click').on('click', () => {
+            //     alert('You must be logged in to favorite items.');
+            // });
             return;
         }
 
@@ -206,16 +266,20 @@ function toggleFavoriteBuilding(buildingId, add) {
     }
     const method = add ? 'POST' : 'DELETE';
 
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: url,
         method: method,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         crossDomain: true,
         success: function () {
-            alert(`Building successfully ${add ? 'added to' : 'removed from'} favorites.`);
+            // alert(`Building successfully ${add ? 'added to' : 'removed from'} favorites.`);
             setupFavoriteBuildingButton(true, buildingId, !add);
+            const button = $('#favorite-button-building');
+            button.prop('disabled', false);
+            button.text(`${!add ? 'Add to' : 'Remove from'} Favorites`);
+            button.off('click').on('click', () => toggleFavoriteBuilding(buildingId, !add));
         },
         error: function (xhr) {
             console.error(`Error ${add ? 'adding' : 'removing'} building from favorites.`, xhr.responseText);
@@ -237,12 +301,17 @@ function toggleFavoriteHousingUnit(unitId, add) {
     const url = `https://miniproject-2024.ue.r.appspot.com/user/${userId}/housing-unit/${unitId}`;
     const method = add ? 'POST' : 'DELETE';
 
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: url,
         method: method,
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function () {
-            alert(`Housing unit successfully ${add ? 'added to' : 'removed from'} favorites.`);
+            // alert(`Housing unit successfully ${add ? 'added to' : 'removed from'} favorites.`);
             checkHousingUnitFavorites(userId);
+            // location.reload();
+            console.log("page reloaded");
         },
         error: function () {
             console.error(`Error ${add ? 'adding' : 'removing'} housing unit from favorites.`);

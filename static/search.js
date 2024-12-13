@@ -18,6 +18,7 @@ function getQueryParam(param) {
 function displaySearchResults() {
     const query = getQueryParam('search');
     const resultsContainer = document.getElementById('search-results');
+    const token = localStorage.getItem('token'); // Retrieve the token from localStorage
 
     resultsContainer.innerHTML = '';
 
@@ -32,16 +33,20 @@ function displaySearchResults() {
     const housingUnitFeaturesUrl = 'https://miniproject-2024.ue.r.appspot.com/housing-unit-features';
     const buildingsUrl = 'https://miniproject-2024.ue.r.appspot.com/buildings';
 
+    const fetchOptions = {
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
+    };
+
     Promise.all([
-        fetch(buildingFeaturesUrl).then(response => {
+        fetch(buildingFeaturesUrl, fetchOptions).then(response => {
             if (!response.ok) throw new Error(`Failed to fetch building features: ${response.statusText}`);
             return response.json();
         }),
-        fetch(housingUnitFeaturesUrl).then(response => {
+        fetch(housingUnitFeaturesUrl, fetchOptions).then(response => {
             if (!response.ok) throw new Error(`Failed to fetch housing units features: ${response.statusText}`);
             return response.json();
         }),
-        fetch(buildingsUrl).then(response => {
+        fetch(buildingsUrl, fetchOptions).then(response => {
             if (!response.ok) throw new Error(`Failed to fetch buildings: ${response.statusText}`);
             return response.json();
         })
@@ -57,7 +62,7 @@ function displaySearchResults() {
 
             const filteredBuildings = buildings.filter(building =>
                 building.address.toLowerCase().includes(query.toLowerCase())
-            )
+            );
 
             const results = [];
 

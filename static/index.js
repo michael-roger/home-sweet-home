@@ -1,7 +1,10 @@
 function fetchBuildingFeatures() {
+  const token = localStorage.getItem('token');
+
   $.ajax({
     url: 'https://miniproject-2024.ue.r.appspot.com/building-features',
     method: 'GET',
+    headers: token ? { 'token': token } : {}, // add token in header if it exists
     success: function(featureEntities) {
       const buildingFeaturesList = $('#building-features');
       buildingFeaturesList.empty(); // Clear existing items
@@ -20,9 +23,12 @@ function fetchBuildingFeatures() {
 }
 
 function fetchHousingUnitFeatures() {
+  const token = localStorage.getItem('token');
+
   $.ajax({
     url: 'https://miniproject-2024.ue.r.appspot.com/housing-unit-features',
     method: 'GET',
+    headers: token ? { 'token': token } : {}, // add token in header if it exists
     success: function(featureEntities) {
       const housingUnitFeaturesList = $('#housing-unit-features');
       housingUnitFeaturesList.empty(); // Clear existing items
