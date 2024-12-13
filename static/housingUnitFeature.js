@@ -11,9 +11,12 @@ function retrieveUnits() {
         return;
     }
 
+    const token = localStorage.getItem('token');
+
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/housing-unit-feature/${id}/housing-units`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             console.log('Housing units retrieved successfully:', response);
             displayUnits(response);

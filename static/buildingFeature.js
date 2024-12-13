@@ -11,9 +11,12 @@ function retrieveBuildings() {
         return;
     }
 
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/building-feature/${id}/buildings`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             console.log('Buildings retrieved successfully:', response);
             displayBuildings(response);

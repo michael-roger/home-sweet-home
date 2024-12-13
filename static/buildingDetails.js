@@ -54,9 +54,12 @@ function getUserId(token, buildingId) {
 }
 
 function fetchBuildingDetails(buildingId) {
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/building/${buildingId}`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             displayBuildingDetails(response);
         },
@@ -67,9 +70,12 @@ function fetchBuildingDetails(buildingId) {
 }
 
 function fetchHousingUnits(buildingId) {
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/buildings/${buildingId}/housing-units`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             displayHousingUnits(response);
         },
@@ -147,9 +153,12 @@ function displayHousingUnits(housingUnits) {
 }
 
 function fetchHousingUnitDetails(unitId, callback) {
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/housing-unit/${unitId}`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             callback(response);
         },
@@ -160,9 +169,11 @@ function fetchHousingUnitDetails(unitId, callback) {
 }
 
 function checkBuildingFavorites(userId, buildingId) {
+    const token = localStorage.getItem("token");
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/user/${userId}/buildings`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             const favoritedBuildings = response.map(building => building.id);
             const isFavorited = favoritedBuildings.includes(parseInt(buildingId));
@@ -175,9 +186,12 @@ function checkBuildingFavorites(userId, buildingId) {
 }
 
 function checkHousingUnitFavorites(userId) {
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: `https://miniproject-2024.ue.r.appspot.com/user/${userId}/housing-units`,
         method: 'GET',
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function (response) {
             const favoritedUnits = response.map(unit => unit.id);
             setupFavoriteUnitButtons(true, favoritedUnits);
@@ -252,12 +266,12 @@ function toggleFavoriteBuilding(buildingId, add) {
     }
     const method = add ? 'POST' : 'DELETE';
 
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: url,
         method: method,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         crossDomain: true,
         success: function () {
             // alert(`Building successfully ${add ? 'added to' : 'removed from'} favorites.`);
@@ -287,9 +301,12 @@ function toggleFavoriteHousingUnit(unitId, add) {
     const url = `https://miniproject-2024.ue.r.appspot.com/user/${userId}/housing-unit/${unitId}`;
     const method = add ? 'POST' : 'DELETE';
 
+    const token = localStorage.getItem("token");
+
     $.ajax({
         url: url,
         method: method,
+        headers: token ? { 'token': token } : {}, // add token in header if it exists
         success: function () {
             // alert(`Housing unit successfully ${add ? 'added to' : 'removed from'} favorites.`);
             checkHousingUnitFavorites(userId);
