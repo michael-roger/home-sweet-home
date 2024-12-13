@@ -82,17 +82,28 @@ function displayHousingUnits(housingUnits) {
             const features = unitDetails.housing_unit_features && unitDetails.housing_unit_features.length > 0
                 ? unitDetails.housing_unit_features.map(feature => `<li>${feature}</li>`).join('')
                 : 'No features available';
-
+    
+            const token = localStorage.getItem('token');
+    
             const housingUnitHtml = `
                 <li class="list-group-item">
                     <strong>Unit Number:</strong> ${unitDetails.unit_number}<br>
                     <strong>Features:</strong>
                     <ul>${features}</ul>
-                    <button id="favorite-unit-${unitDetails.id}" class="btn btn-primary favorite-button-unit" data-unit-id="${unitDetails.id}" disabled>Loading...</button>
+                    ${
+                        token
+                            ? `<button id="favorite-unit-${unitDetails.id}" class="btn btn-primary favorite-button-unit" data-unit-id="${unitDetails.id}" disabled>Loading...</button>`
+                            : '' // No button if no token
+                    }
                 </li>
             `;
             housingUnitsList.append(housingUnitHtml);
-        });
+    
+            if (token) {
+                // Further setup for logged-in users
+                setupFavoriteUnitButtons(true); // Adjust your logic as necessary
+            }
+    })
     });
 
     const token = localStorage.getItem('token');
@@ -149,10 +160,11 @@ function setupFavoriteBuildingButton(isLoggedIn, buildingId = null, isFavorited 
     button.prop('disabled', false);
 
     if (!isLoggedIn) {
-        button.text('Add to Favorites');
-        button.off('click').on('click', () => {
-            alert('You must be logged in to favorite items.');
-        });
+        // button.text('Add to Favorites');
+        // button.off('click').on('click', () => {
+        //     alert('You must be logged in to favorite items.');
+        // });
+        button.addClass('d-none');
         return;
     }
 
@@ -173,10 +185,11 @@ function setupFavoriteUnitButtons(isLoggedIn, favoritedUnits = []) {
         button.prop('disabled', false);
 
         if (!isLoggedIn) {
-            button.text('Add to Favorites');
-            button.off('click').on('click', () => {
-                alert('You must be logged in to favorite items.');
-            });
+            button.addClass('d-none');
+            // button.text('Add to Favorites');
+            // button.off('click').on('click', () => {
+            //     alert('You must be logged in to favorite items.');
+            // });
             return;
         }
 

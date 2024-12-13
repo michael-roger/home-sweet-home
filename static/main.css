@@ -93,3 +93,7 @@ button:hover {
     color: #6c757d; /* Bootstrap's muted gray */
     line-height: 1.6;
 }
+
+.d-none {
+    display: none;
+}
