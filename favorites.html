@@ -97,6 +97,23 @@
     </div>
   </div>
 
+  <script>
+    $(document).ready(function () {
+      // Logout button click handler
+      $('#logout-btn').click(function (e) {
+        e.preventDefault(); // Prevent the default action of the anchor tag
+  
+        // Clear user-related data from localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('signupSuccessMessage');
+  
+        // Redirect to the login page
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
+
   <footer class="royal-blue">
     <a>&copy; 2024 KebabCase. All Rights Reserved.</a>
   </footer>

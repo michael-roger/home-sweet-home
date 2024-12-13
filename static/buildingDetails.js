@@ -12,13 +12,46 @@ $(document).ready(function () {
     fetchHousingUnits(buildingId);
 
     if (token) {
-        const userId = localStorage.getItem('userId');
-        checkBuildingFavorites(userId, buildingId);
-        checkHousingUnitFavorites(userId);
+        console.log("Token: " + token);
+        getUserId(token, buildingId);
+        
     } else {
         setupFavoriteBuildingButton(false);
     }
 });
+
+function getUserId(token, buildingId) {
+    $.ajax({
+            url: 'https://miniproject-2024.ue.r.appspot.com/me',
+            method: 'GET',
+            headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'token': token,
+        },
+        crossDomain: true,
+            success: function(response) {
+                localStorage.setItem("userId", response.id);
+                const userId = localStorage.getItem('userId');
+                console.log("User ID: " + userId);
+                checkBuildingFavorites(userId, buildingId);
+                checkHousingUnitFavorites(userId);
+
+            },
+            error: function(xhr) {
+                // Handle different error scenarios
+            switch (xhr.status) {
+            case 401: // Unauthorized
+                console.log('You must be logged in to view this page.');
+                break;
+            case 404: // Not Found
+                console.log('User information could not be found.');
+                break;
+            default:
+                console.log('An unexpected error occurred. Please try again later.');
+            }
+        }
+    });	
+}
 
 function fetchBuildingDetails(buildingId) {
     $.ajax({
